@@ -22,12 +22,19 @@ def hello():
 hello()
 
 def percent_decimal(i):
+
     """
     Converts a percentage to a decimal or a decimal to a percentage depending on the input i
     :param i: a float between 0 and 100
     :return: a float between 0 and 100
     """
+    i = float(input("Enter a number"))
+    if i > 1:
+        print('the percentage form is', i / 100)
+    else:
+        print('The value in percentage form is ', i * 100)
     return
+percent_decimal(0.1)
 
 def exponent(integer, power):
     """
@@ -36,7 +43,15 @@ def exponent(integer, power):
     :param power: a positive, non zero, integer
     :return: an integer
     """
+    #base = int(input('Enter base'))
+    #exponent = int(input('enter exponent'))
+    product = 1
+    # Multiply base exponent times
+    for i in range(power):
+        product = product * integer
+    print(integer, 'to the power of', power, 'is', product)
     return
+exponent(2,5)
 
 def complement(dna):
     """
@@ -44,4 +59,16 @@ def complement(dna):
     :param dna: String containing only C, T, A, and G
     :return: String containing only C, T, A, and G
     """
-    return
+    temp = ''
+    for alp in dna:
+        if alp == 'A':
+            temp = temp + 'T';
+        elif alp == 'T':
+            temp = temp + 'A';
+        elif alp == 'C':
+            temp = temp + 'G';
+        elif alp == 'G':
+            temp = temp + 'C';
+    print(temp)
+
+complement('ABCD')
