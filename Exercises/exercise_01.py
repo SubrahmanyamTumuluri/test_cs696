@@ -62,13 +62,13 @@ def complement(dna):
     temp = ''
     for alp in dna:
         if alp == 'A':
-            temp = temp + 'T';
+            temp = temp + 'T'
         elif alp == 'T':
-            temp = temp + 'A';
+            temp = temp + 'A'
         elif alp == 'C':
-            temp = temp + 'G';
+            temp = temp + 'G'
         elif alp == 'G':
-            temp = temp + 'C';
+            temp = temp + 'C'
     print(temp)
 
 complement('ABCD')

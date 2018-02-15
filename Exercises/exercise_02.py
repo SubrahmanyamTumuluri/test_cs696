@@ -18,7 +18,6 @@ print(n_elements([0,1,2,3,4,5],2,3))
 def count_letters(s):
     from collections import Counter
     return(Counter(s))
-
 print( count_letters('subbu'))
 
 def protein_wight(protein):
