@@ -23,7 +23,7 @@ def rc(dna):
     # for char in dna:
     #     rc_dna += comp_dict[char]
   #  ''.join([comp_dict[char] for char in dna])
-    return ('   '.join([comp_dict[char] for char in dna]))
+    return (' '.join([comp_dict[char] for char in dna]))
 print(rc("CCCTTTCCCAAA"))
 
 def percent_decimal(numbers):
@@ -89,6 +89,6 @@ def multiple_proteins_from_rna(rna):
      #   if char == "M":
       #      protein_list.append(protein[index:])  # append the found protein from M to the end of the string
     prot_list=[C2AA[rna[i:i+3]]for i in range(0, len(rna),3)]
-    protein_list=[prot_list[index:]for index, char in enumerate(prot_list)if char == "M"]
+    protein_list=[prot_list[index:]for index, char in enumerate(prot_list) if char == "M"]
     return protein_list
 print(multiple_proteins_from_rna("UCCAUGUUUAUGAGGAGGUGA"))

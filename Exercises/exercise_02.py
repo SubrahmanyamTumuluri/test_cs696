@@ -1,24 +1,57 @@
 
 def first_elements(my_list, n):
+    """
+       returns the first n elements in a list.
+       EX: first_element([0, 1, 2, 3], 2) should return [0, 1]
+       :param my_list: a non-empty list
+       :param n: an integer greater than 0
+       :return: a list of length n
+       """
     return(my_list[:n])
 print(first_elements([0,1,2,3],2))
 
 
 def last_elements(my_list,n) :
+    """
+        returns the last n elements in a list.
+        EX: last_element([0, 1, 2, 3], 2) should return [2, 3]
+        :param my_list: a non-empty list
+        :param n: an integer greater than 0
+        :return: a list of length n
+        """
     return (my_list[n:])
 print(last_elements([0, 1, 2, 3],2))
 
 def n_elements(my_list, start, n):
+    """
+        returns n elements in a list, starting at the position "start".
+        EX: n_elements([0, 1, 2, 3, 4, 5], 2, 3) should return [2, 3, 4]
+        :param my_list: a non-empty list
+        :param start: a non-negative integer
+        :param n: an integer greater than 0
+        :return: a list of length n
+        """
     n=start+n
     return(my_list[start:n])
 print(n_elements([0,1,2,3,4,5],2,3))
 
-
-
 def count_letters(s):
-    from collections import Counter
-    return(Counter(s))
-print( count_letters('subbu'))
+    """
+        returns a dictionary containing each letter in s as a key and
+        the number of times each letter has occurred as the value
+        :param s: a string
+        :return: a dictionary
+        """
+    my_dict = {}
+    for char in s:
+        #keys = my_dict.keys()#how to obtain keys in the dictionary.
+        if char in my_dict.keys() :
+            my_dict[char] += 1
+        else:
+            my_dict[char] = 1
+    return my_dict
+print(count_letters('Subbu'))
+
 
 def protein_wight(protein):
     """

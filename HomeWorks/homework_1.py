@@ -50,7 +50,7 @@ def kmer_list(s, k):
     for a in range(0,p-k+1) :
         kmer_list.append(s[a:a+k])
     return kmer_list
-print(kmer_list("ABCDEF",2))
+print(kmer_list("ABCDE",2))
 
 def kmer_set(s, k):
     """
@@ -76,10 +76,10 @@ def kmer_dict(s, k):
     """
     kmer_dict = {}
     p=len(s)
-    for a in range(1,p-k+1):
-          kmer_dict[(s[a:a+k])]=2
+    for a in range(p-k+1):
+          kmer_dict[(s[a:a+k])]='1'  #dict['Key']='value'
     return kmer_dict
-print(kmer_dict('ABCDEF',2))
+print(kmer_dict('ABCDE',2))
 
 # Reading Files
 def head(file_name):
@@ -258,7 +258,6 @@ def translate(rna):
     :param rna: a string containing only the characters C, U, A, and G
     :return: a string containing only the characters G, A, L, M, F, W, K, Q, E, S, P, V, I, C, Y, H, R, N, D, and T
     """
-
     string=''
     RNA_CODON_TABLE = {"UUU": "F", "UUC": "F", "UUA": "L", "UUG": "L",
            "UCU": "S", "UCC": "S", "UCA": "S", "UCG": "S",
@@ -277,11 +276,6 @@ def translate(rna):
            "GAU": "D", "GAC": "D", "GAA": "E", "GAG": "E",
            "GGU": "G", "GGC": "G", "GGA": "G", "GGG": "G"}
 
-    for p in range(0,len(rna),3):
-     z=RNA_CODON_TABLE(rna[p:p+3])
-     string=string+z
-     return string
-print(translate('UGUCAUCGU'))
 
 def reading_frames(dna):
     """

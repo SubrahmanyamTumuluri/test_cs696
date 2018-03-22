@@ -40,13 +40,13 @@ def fasta_folder_to_dict(folder_path):
     for file_name in os.listdir (folder_path):
         if(file_name.endswith('fasta')):
             with open(folder_path+file_name, 'r') as infile:
-                text = infile.read()
-                seqs = text.split('>')
+                text = infile.read()#Reads the file.
+                seqs = text.split('>')# Removes a '>' command present in proper fasta file.
                 for seq in seqs:
                     try:
-                        x = seq.split('\n', 1)
+                        x = seq.split('\n',1)#everything comes in a single line.
                         header = x[0]
-                        sequence = x[1].replace('\n', '')
+                        sequence = x[1].replace('\n','')
                         if header in dictionary :
                             if sequence == dictionary[header]:
                                 dictionary[header] = sequence
@@ -75,8 +75,10 @@ def fasta_folder_to_dict(folder_path):
                     except:
                         print('error')
 
-            return dictionary
+    return dictionary
 
 my_dictionary = fasta_folder_to_dict('test_files/')
 for key, value in my_dictionary.items():
-    print('Key is: {}\tValue is: {}'.format(key, value))
+    a='KEY is: {}\tVALUE is {}'
+    print(a.format(key, value))
+    #print('KEY is: {}\tVALUE is {}'.format(key, value))
