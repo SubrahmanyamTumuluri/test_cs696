@@ -24,7 +24,7 @@ def fast_complement(dna):
         elif alp == 'G':
             temp = temp + 'C'
     print(temp)
-fast_complement('GACT')
+#fast_complement('GACT')
 
 def remove_interval(s, start, stop):
     """
@@ -36,9 +36,9 @@ def remove_interval(s, start, stop):
     :return: a string
     """
     return(s[:start]+s[stop+1:])
-print(remove_interval("ABCDEFGHI",2,5))
+#print(remove_interval("ABCDEFGHI",2,5))
 
-def kmer_list(s, k):
+def kmer_list(s,k):
     """
     Generates all kmers of size k for a string s and store them in a list
     :param s: any string
@@ -50,7 +50,7 @@ def kmer_list(s, k):
     for a in range(0,p-k+1) :
         kmer_list.append(s[a:a+k])
     return kmer_list
-print(kmer_list("ABCDE",2))
+#print(kmer_list("ABCDE",2))
 
 def kmer_set(s, k):
     """
@@ -64,7 +64,7 @@ def kmer_set(s, k):
     for a in range(0,p-k+1):
         kmer_set.add(s[a:a+k])
     return kmer_set
-print(kmer_set('ABCDE',2))
+#print(kmer_set('ABCDE',2))
 
 def kmer_dict(s, k):
     """
@@ -79,7 +79,7 @@ def kmer_dict(s, k):
     for a in range(p-k+1):
           kmer_dict[(s[a:a+k])]='1'  #dict['Key']='value'
     return kmer_dict
-print(kmer_dict('ABCDE',2))
+#print(kmer_dict('ABCDE',2))
 
 # Reading Files
 def head(file_name):
@@ -102,7 +102,7 @@ def tail(file_name):
     with open('test_files/tricky_fasta.fasta', 'r') as file:
         cont=file.readlines()      #contents is represented by cont
         print(cont[len(cont)-10:len(cont):1])
-tail('test_files/tricky_fasta.fasta')
+#tail('test_files/tricky_fasta.fasta')
 
 def print_even(file_name):
     """
@@ -130,7 +130,7 @@ def csv_list(file_name):
             j = i.split(',')
             csv_list.append(j)
         return csv_list
-print(csv_list('test_files/newcsv_fasta.fasta'))
+#print(csv_list('test_files/newcsv_fasta.fasta'))
 def get_csv_column(file_name, column):
     """
     Reads in a CSV file and returns a list of values belonging to the column specified
@@ -145,7 +145,7 @@ def get_csv_column(file_name, column):
             j= i.split(',')
             get_csv_column.append(newcsvfile[column])
         return get_csv_column
-print (get_csv_column('test_files/newcsv_fasta.fasta', 1 ))
+#print (get_csv_column('test_files/newcsv_fasta.fasta', 1 ))
 
 def fasta_seqs(file_name):
     """
@@ -161,7 +161,7 @@ def fasta_seqs(file_name):
              x = seq.split('\n', 1)
         sequence = x[1].replace('\n', '')
     return sequence
-print(fasta_seqs('test_files/proper_fasta.fasta'))
+#print(fasta_seqs('test_files/proper_fasta.fasta'))
 
 
 def fasta_headers(file_name):
@@ -179,7 +179,7 @@ def fasta_headers(file_name):
             x = seq.split('\n', 1)
             header.append(x[0])
     return header
-print(fasta_headers('test_files/proper_fasta.fasta'))
+#print(fasta_headers('test_files/proper_fasta.fasta'))
 
 def fasta_dict(file_name):
     """
@@ -198,7 +198,7 @@ def fasta_dict(file_name):
                 se = seq.split('\n', 1)
                 fasta_dict[se[0]] = se[1]
     return fasta_dict
-print(fasta_dict('test_files/tricky_fasta.fasta'))
+#print(fasta_dict('test_files/tricky_fasta.fasta'))
 
 def fastq_to_fasta(file_name, new_name=None):
     """
@@ -229,8 +229,7 @@ def reverse_complement(dna):
         elif alp == 'G':
             temp = temp + 'C'
     print(temp)
-reverse_complement('ABCD')
-
+#reverse_complement('ABCD')
 
 def transcribe(dna):
     """
@@ -249,7 +248,7 @@ def transcribe(dna):
         elif alp == 'T':
             temp = temp + 'A'
     print(temp)
-transcribe('CAT')
+#transcribe('CAT')
 
 def translate(rna):
     """
