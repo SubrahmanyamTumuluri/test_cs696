@@ -1,127 +1,135 @@
-"""
-Exercise 5
-Word association with Nodes
-When you type text into your phone, you may notice that a next word is automatically suggested to you before
-you have even started typing a next word.
-In this simplified example, we will create a node for each word in a string;
-the "next" property for each Node will be a list of the words that have immediately followed that word.
-* Reminder *
-    Instance variables are: self.variable_name
-    Class variables are: Class.variable_name
-"""
-
-import random
+import math
 
 
-class Node:
-    node_dictionary = {}
-    """
-    Node class for word association that includes:
-     * A class variable "node_dictionary" to store instances of the Node class where
-        * Keys are words (strings) and values are Nodes (the Node instance corresponding to the word)
-     * Instance variables "word" and "next"
-        * word - a string
-        * next - a list of words that follow this word (contains duplicate words)
-     * A _str_ method that returns the word instance variable of the node
-    """
+def johnson(graph: dict):
+    graph[Ellipsis] = [(k, 0) for k in graph.keys()]
+    has_result, v2weight_num = bellman_ford(graph, Ellipsis)
 
-    # The class variable, node_dictionary (below) is a dictionary with words (strings) as keys and lists as values.
+    if not has_result:
+        return False, None
+    print('has result')
+    result = {}
+    del graph[Ellipsis]
+    for u in graph.keys():
+        print('computing', u)
+        v2dist = dijkstra_with_reweight(graph, u, v2weight_num)
+        result[u] = {v: dist - v2weight_num[u] + v2weight_num[v] for v, dist in v2dist.items()}
 
-
-    def _init_(self, word):
-        """
-        Takes in 1 argument, the word associated with the Node and also
-        initializes an instance variable "next" as an empty list.
-        The empty list will store words (not Nodes) that follow this word
-        :param word: A string
-        """
-        self.word = word
-        self.next = []
+    return True, result
 
 
-    def _str_(self):
-        """
-        returns the word associated with the Node
-        :return: string
-        """
-        return self.word
+def bellman_ford(graph, source):
+    v2dist = {v: 0 if v == source else math.inf for v in graph.keys()}
+
+    for i in range(len(v2dist)):
+        for v, edges in graph.items():
+            for u, w in edges:
+                if v2dist[u] > v2dist[v] + w:
+                    v2dist[u] = v2dist[v] + w
+
+    # check negative cycle
+    for v, edges in graph.items():
+        for u, w in edges:
+            if v2dist[u] > v2dist[v] + w:
+                return False, None
+
+    return True, v2dist
 
 
-def print_all_nodes():
-    """
-    Call this function in your main function to print all of the nodes
-    :return: None
-    """
-    for k, v in Node.node_dictionary.items():
-        print("Word: {} \t Followed by: {}".format(k, v.next))
-    return
+def dijkstra_with_reweight(graph, source, v2weight_num):
+    pq = PriorityQueue()
+    v2dist = {}
+
+    pq.add(key=0, item=source)
+    v2dist[source] = 0
+    while not pq.is_empty():
+        dist, v = pq.delete_min()
+        v2dist[v] = dist
+        for u, edge_dist in graph[v]:
+            if u not in v2dist:
+                cur_dist = dist + edge_dist + v2weight_num[v] - v2weight_num[u]
+                if pq.has_item(u):
+                    origin_dist, _ = pq.delete_item(u)
+                    pq.add(key=min(cur_dist, origin_dist), item=u)
+                else:
+                    pq.add(key=cur_dist, item=u)
+    return v2dist
 
 
-def new_beatles():
-    """
-    This definition is purely for fun. Starting at the word "she", this will select a random word that could follow
-    and repeat this process to print a new beatles song of the same format.
-    :return: None
-    """
-    nd = Node.node_dictionary  # shortcut to the class dictionary
+class PriorityQueue:
+    """A minimum priority queue based on heap, accepte (key, item) and supports delete item, item should be hashable."""
+    def __init__(self):
+        self.records = [None]
+        self.cnt = 0
+        self.item2index = {}
 
-    new_song = []
-    current_word = 'she'
-    for i in range(23):
-        new_song.append(current_word)
-        if len(nd[current_word].next) > 0:
-            current_word = random.choice(nd[current_word].next)
-        else:  # word has no next word available - so pick a random word
-            current_word = random.choice(list(nd.keys()))
+    def swim(self, k):
+        while k > 1 and self.records[k][0] < self.records[k//2][0]:
+            self.swap(k, k//2)
+            k //= 2
 
-    print(' '.join(new_song[:5]))
-    print(' '.join(new_song[5:12]))
-    print(' '.join(new_song[12:16]))
-    print(' '.join(new_song[16:]))
-    return
+    def sink(self, k):
+        while k*2 <= self.cnt:
+            j = k*2
+            if j < self.cnt and self.records[j][0] > self.records[j+1][0]:
+                j += 1
 
+            if self.records[k][0] > self.records[j][0]:
+                self.swap(k, j)
+                k = j
+            else:
+                break
 
-def main():
-    """
-    When print_all_nodes() is called, the main definition for this script should print out (in any order):
-    Word: she 	 Followed by: ['says', 'loves', 'loves']
-    Word: says 	 Followed by: ['she']
-    Word: loves 	 Followed by: ['you', 'you']
-    Word: you 	 Followed by: ['and', 'know', 'and', 'know', 'should']
-    Word: and 	 Followed by: ['you', 'you']
-    Word: know 	 Followed by: ['that', 'you']
-    Word: that 	 Followed by: ['cant']
-    Word: cant 	 Followed by: ['be']
-    Word: be 	 Followed by: ['bad', 'glad']
-    Word: bad 	 Followed by: ['yes']
-    Word: yes 	 Followed by: ['she']
-    Word: should 	 Followed by: ['be']
-    Word: glad 	 Followed by: []
-    :return: None
-    """
+    def swap(self, k, j):
+        self.item2index[self.records[k][1]] = j
+        self.item2index[self.records[j][1]] = k
+        self.records[k], self.records[j] = self.records[j], self.records[k]
 
-    # This is the text we will by analyzing
-    beatles = """She says she loves you
-    And you know that cant be bad
-    Yes she loves you
-    And you know you should be glad
-    """
-    # In this following example of list comprehension, we process the text above into a list.
-    # The "if word" check at the end, will return false if word is an empty string
-    word_list = [word.lower().replace('\n', '') for word in beatles.split(' ') if word]
+    def add(self, key, item):
+        self.records.append((key, item))
+        self.cnt += 1
+        self.item2index[item] = self.cnt
+        self.swim(self.cnt)
 
-    node_dict = {}
+    def delete_min(self):
+        record = self.records[1]
+        return self.delete_item(record[1])
 
-    prev_word = None
-    for word in word_list:
-        if prev_word:
-            Node.node_dictionary[prev_word].next.append(word)
-        if word not in Node.node_dictionary:
-                Node.node_dictionary[word] = Node(word)
-        prev_word = word
+    def delete_item(self, item):
+        index = self.item2index[item]
+        record = self.records[index]
+        del self.item2index[item]
 
-    print_all_nodes()
+        if self.cnt == 1 or index == self.cnt:
+            self.records.pop()
+            self.cnt -= 1
+        else:
+            last_record = self.records.pop()
+            self.records[index] = last_record
+            self.item2index[last_record[1]] = index
+            self.cnt -= 1
+            self.swim(index)
+            self.sink(index)
+
+        return record
+
+    def has_item(self, item):
+        return item in self.item2index
+
+    def is_empty(self):
+        return self.cnt == 0
 
 
-if __name__ == '_main_':
-    main()
+if __name__ == '__main__':
+    # https://en.wikipedia.org/wiki/File:Dijkstra_Animation.gif
+    g = {
+        1: [(2, 7), (3, 9), (6, 14)],
+        2: [(1, 7), (3, 10), (4, 15)],
+        3: [(1, 9), (2, 10), (4, 11), (6, 2)],
+        4: [(2, 15), (3, 11), (5, 6)],
+        5: [(4, 6), (6, 9)],
+        6: [(1, 14), (3, 2), (5, 9)]
+    }
+    has_result, result = johnson(g)
+    print(has_result, result)
+
